@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, FlatList, Button, ActivityIndicator } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux';
 import MyColors from '../../constants/MyColors'
 import CartItem from './../../components/shop/CartItem';
@@ -8,8 +8,8 @@ import { addOrder } from './../../store/actions/order';
 import Card from './../../components/UI/Card';
 
 export default function CartScreen(props) {
-    // const ord = useSelector(state => state.orders)
-    // console.log(ord)
+    const [isLoading, setIsLoading] = useState(false)
+
     const cartTotalAmount = useSelector(state => state.cart.totalAmount)
     const dispatch = useDispatch()
 
@@ -28,16 +28,22 @@ export default function CartScreen(props) {
         return transformedCartItems.sort((a, b) => a.productId > b.productId ? 1 : -1)
     })
 
+    const sendOrderHandler = async () => {
+        setIsLoading(true)
+        await dispatch(addOrder(cartItems, cartTotalAmount))
+        setIsLoading(false)
+    }
 
     return (
         <View style={styles.screen}>
             <Card style={styles.summary}>
                 <Text style={styles.summaryText}>
-                    Total:{' '}<Text style={styles.amount}>${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}</Text>
+                    Total:{' '}<Text style={styles.amount}> ${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}</Text>
+
                 </Text>
-                <Button title='Order Now' disabled={cartItems.length === 0} onPress={() => {
-                    dispatch(addOrder(cartItems, cartTotalAmount))
-                }} />
+                {isLoading ? <ActivityIndicator saze='small' color={MyColors.primary} /> : (
+                    <Button title='Order Now' disabled={cartItems.length === 0} onPress={sendOrderHandler} />
+                )}
             </Card>
             <FlatList
                 data={cartItems}
@@ -79,5 +85,5 @@ const styles = StyleSheet.create({
     },
     amount: {
         color: MyColors.primary,
-    }
+    },
 })

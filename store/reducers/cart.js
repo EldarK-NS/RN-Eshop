@@ -13,10 +13,10 @@ const cartReducer = (state = initialState, action) => {
             const prodPrice = addedProduct.price
             const prodTitle = addedProduct.title
 
-            let updateOrNewCartItem;
+            let updatedOrNewCartItem;
 
             if (state.items[addedProduct.id]) {
-                updateOrNewCartItem = new CartItem(
+                updatedOrNewCartItem = new CartItem(
                     state.items[addedProduct.id].quantity + 1,
                     prodPrice,
                     prodTitle,
@@ -24,11 +24,11 @@ const cartReducer = (state = initialState, action) => {
                 )
 
             } else {
-                updateOrNewCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice)
+                updatedOrNewCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice)
             }
             return {
                 ...state,
-                items: { ...state.items, [addedProduct.id]: updateOrNewCartItem },
+                items: { ...state.items, [addedProduct.id]: updatedOrNewCartItem },
                 totalAmount: state.totalAmount + prodPrice
             }
         case REMOVE_FROM_CART:
