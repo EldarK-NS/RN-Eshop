@@ -1,4 +1,4 @@
-import { SIGN_UP, LOGIN } from '../types'
+import { AUTHENTICATE, LOGOUT } from '../types'
 
 const initialState = {
     token: null,
@@ -7,17 +7,19 @@ const initialState = {
 
 export default authReducer = (state = initialState, action) => {
     switch (action.type) {
-        case LOGIN:
+        case AUTHENTICATE:
 
             return {
                 token: action.token,
                 userId: action.userId
             }
-        case SIGN_UP:
-            return {
-                token: action.token,
-                userId: action.userId
-            }
+        case LOGOUT:
+            return initialState;
+        // case SIGN_UP:
+        //     return {
+        //         token: action.token,
+        //         userId: action.userId
+        //     }
 
         default:
             return state
