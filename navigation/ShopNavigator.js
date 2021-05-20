@@ -90,7 +90,7 @@ const ShopNavigator = createDrawerNavigator({
                     <DrawerNavigatorItems {...props} />
                     <Button title='Logout' color={MyColors.primary} onPress={() => {
                         dispatch(logout())
-                        props.navigation.navigate('Auth')
+                        // props.navigation.navigate('Auth')
                     }} />
 
                 </SafeAreaView>
